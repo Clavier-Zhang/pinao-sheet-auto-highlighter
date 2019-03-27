@@ -1,26 +1,28 @@
 import cv2
 import numpy as np
 from tools import *
+from helper import *
+red = (0,0,255)
 
+class Sheet:
 
-def label_all_bass(img, color):
-    bass_1 = read_template('data/bass/BASS_1.png')
-    find_all_and_label(img, bass_1, 0.6, color)
+    width = 0
 
-def label_all_sharp(img, color):
-    sharp_1 = read_template('data/sharp/SHARP_1.png')
-    find_all_and_label(img, sharp_1, 0.6, color)
+    height = 0
 
-def label_all_treble(img, color):
-    treble_1 = read_template('data/treble/TREBLE_1.png')
-    find_all_and_label(img, treble_1, 0.5, color)
+    top_left = (0, 0)
 
-def label_all_natural(img, color):
-    natural_1 = read_template('data/natural/NATURAL_1.png')
-    find_all_and_label(img, natural_1, 0.7, color)
+    image = None
 
-def label_all_measure(img, color):
-    measure_1 = read_template('data/measure/MEASURE_1.png')
-    measure_2 = read_template('data/measure/MEASURE_2.png')
-    find_all_and_label(img, measure_1, 0.85, color)
-    find_all_and_label(img, measure_2, 0.9, color)
+    lines = []
+
+    def __init__(self, image_path):
+        self.image = cv2.imread(image_path)
+        self.width = self.image.shape[::-1][1]
+        self.height = self.image.shape[::-1][2]
+        label_all_measure(self.image, red)
+        save('test.png', self.image)
+        print(self.height)
+
+    def build_lines(self):
+        return 

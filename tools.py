@@ -43,8 +43,25 @@ def read_template(templatepath):
 def remove_close_point(points, range):
     selecteds = []
     for point in points:
+        keep = True
         for selected in selecteds:
             diff = (point[0]-selected[0])**2 + (point[1]-selected[1])**2
             if diff < range:
-                selecteds.append(point)
-    return selected
+                keep = False
+        if keep:
+            selecteds.append(point)
+    return selecteds
+
+def mouse_call_back(event, x, y, flags, params):
+    if event == cv2.EVENT_LBUTTONDOWN:
+        print((x, y))
+        
+def get_point(imagePath):
+    img = cv2.imread(imagePath)
+    cv2.imshow('image',img)
+    cv2.setMouseCallback('image', mouse_call_back)
+    result = cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+def crop(image, top_left, width, height):
+    return image[top_left[1]:top_left[1]+height, top_left[0]:top_left[0]+width]

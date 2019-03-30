@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import os
 
 def draw_one_rectangle(img, top_left_point, width, height, color):
     bottom_right_point = (top_left_point[0] + width, top_left_point[1] + height)
@@ -18,11 +19,6 @@ def draw_one_horizontal_line(img, left_end, width, height, color):
 
 
 
-def find_all_and_label(img, template, confidence, color):
-    points = find_all_match(img, template, confidence)
-    width, height = template.shape[::-1]
-    draw_all_rectangles(img, points, width, height, color)
-
 def find_all_match(img, template, confidnece):
     img = convert_grey(img)
     res = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
@@ -30,11 +26,32 @@ def find_all_match(img, template, confidnece):
     points = list(zip(*loc[::-1]))
     return points
 
+def find_all_dir_templates(image, dir, confidence, close_range):
+    result = []
+    for image_path in os.listdir(dir):
+        if image_path.endswith(".png"):
+            template = read_template(dir+image_path)
+            result = result + find_all_match(image, template, confidence)
+    points = remove_close_point(result, close_range)
+    return points
+
+def find_all_dir_templates_test(image, dir, confidence, close_range):
+    result = []
+    for image_path in os.listdir(dir):
+        if image_path.endswith(".png"):
+            template = read_template(dir+image_path)
+            result = result + find_all_match(image, template, confidence)
+    return result
+
+
 def convert_grey(img):
     return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 def save(filename, img):
     cv2.imwrite(filename, img)
+
+def read(image_path):
+    return cv2.imread(image_path)
 
 def read_template(templatepath):
     return cv2.imread(templatepath, 0)

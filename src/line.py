@@ -18,18 +18,59 @@ class Line:
 
     bars = []
 
-    def __init__(self, image, top_left_point, line_height, line_gap, all_bar_line_points):
+    head_sharp_points = []
+    
+    head_flat_points = []
+
+    # solve this later
+    sharp_flat_range = 200
+
+    def __init__(self, image, top_left_point, line_height, line_gap, all_bar_line_points, all_sharp_points, all_flat_points, all_natural_points):
         self.image = image
         self.line_height = line_height
         self.width = image.shape[::-1][1]
         self.line_gap = line_gap
         self.top_left_point = top_left_point
-        self.bar_line_points = []
 
-        self.build_bars(all_bar_line_points)
-        
+        self.construct_bars(all_bar_line_points)
 
-    def build_bars(self, all_bar_line_points):
+
+
+    def analyze_sharp_and_flat_points(self, all_sharp_points, all_flat_points, all_natural_points):
+
+        line_sharp_points = []
+        line_flat_points = []
+        line_natural_points = []
+
+        line_sharp_num = 0
+        line_flat_num = 0
+
+        for sharp_point in all_sharp_points:
+            if (self.contains(sharp_point)):
+                line_sharp_points.append(sharp_point)
+                if sharp_point[0] < self.bars[0].top_left_point[0]+self.sharp_flat_range:
+                    line_sharp_num += 1
+                    self.head_sharp_points.append(sharp_point)
+
+        for flat_point in all_flat_points:
+            if (self.contains(flat_point)):
+                line_flat_points.append(flat_point)
+                if flat_point[0] < self.bars[0].top_left_point[0]+self.flat_flat_range:
+                    line_flat_num += 1
+                    self.head_flat_points.append(flat_point)
+
+        for natural_point in all_natural_points:
+            if (self.contains(natural_point)):
+                line_natural_points.append(natural_point)
+
+        for bar in self.bars:
+            bar.analyze_sharp_and_flat_points(line_sharp_points, line_flat_points, line_sharp_num, line_flat_num, line_natural_points)
+
+        print(line_sharp_points)
+        draw_all_rectangles(self.image, self.head_sharp_points, 25, 50, red)
+        print(line_flat_points)
+
+    def construct_bars(self, all_bar_line_points):
         bar_line_points = []
         for bar_line_point in all_bar_line_points:
             if (self.contains(bar_line_point)):
@@ -43,18 +84,7 @@ class Line:
             bar = Bar(self.image, top_left_point, width, self.line_height, self.line_gap)
             self.bars.append(bar)
 
-        print(bar_line_points)
-
-    def label_all_bar_lines(self):
-        result = []
-        for image_path in os.listdir(bar_line_dir):
-            if image_path.endswith(".png"):
-                bar_line = read_template(bar_line_dir+image_path)
-                result = result + find_all_match(self.image, bar_line, 0.85)
-
-        points = remove_close_point(result, 2000)
-
-        draw_all_rectangles(self.image, points, 50, 50, red)
+        self.bars.sort(key=lambda bar : bar.top_left_point[0])
 
     def contains(self, point):
         x = point[0]

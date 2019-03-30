@@ -3,11 +3,7 @@ import numpy as np
 from src.tools import *
 from src.helper import *
 from src.line import Line
-
-red = (0,0,255)
-blue = (255, 0, 0)
-
-brace_dir = 'data/brace/'
+from src.constants import *
 
 class Sheet:
 
@@ -32,17 +28,21 @@ class Sheet:
         self.width = self.image.shape[::-1][1]
         self.height = self.image.shape[::-1][2]
         self.line_height = line_height
-        self.build_line_grids()
+
+        self.build_lines()
+
         self.draw_lines()
         self.draw_sheet()
+
         save('test.png', self.image)
 
-    def build_line_grids(self):
-        points = self.find_all_braces()
-        self.line_gap = int((points[1][1]-points[0][1]-self.line_height)/2)
-        for point in points:
-            self.line_pos.append((0, point[1]-self.line_gap))
-            self.lines.append(Line(self.image, (0, point[1]-self.line_gap), self.line_height, self.line_gap))
+    def build_lines(self):
+        brace_points = self.find_all_braces()
+        bar_line_points = self.find_all_bar_lines()
+        self.line_gap = int((brace_points[1][1]-brace_points[0][1]-self.line_height)/2)
+        for brace_point in brace_points:
+            line = Line(self.image, (0, brace_point[1]-self.line_gap), self.line_height, self.line_gap, bar_line_points)
+            self.lines.append(line)
 
     def find_all_braces(self):
         result = []
@@ -59,4 +59,15 @@ class Sheet:
     def draw_lines(self):
         for line in self.lines:
             line.draw_line()
-        # draw_all_rectangles(self.image, self.line_pos, self.width, self.line_height+self.line_gap*2, red)
+
+    def find_all_bar_lines(self):
+        result = []
+        for image_path in os.listdir(bar_line_dir):
+            if image_path.endswith(".png"):
+                bar_line = read_template(bar_line_dir+image_path)
+                result = result + find_all_match(self.image, bar_line, 0.85)
+
+        points = remove_close_point(result, 5000)
+
+        draw_all_rectangles(self.image, points, 50, 50, red)
+        return points

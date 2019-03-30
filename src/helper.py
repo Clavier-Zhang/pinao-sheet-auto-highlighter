@@ -27,7 +27,7 @@ def label_all_natural(img, color):
     natural_1 = read_template('data/natural/NATURAL_1.png')
     find_all_and_label(img, natural_1, 0.7, color)
 
-def label_all_measure(image, color):
+def label_all_bar_lines(image, color):
     result = []
     for image_path in os.listdir(measure_dir):
         if image_path.endswith(".png"):

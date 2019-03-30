@@ -7,19 +7,17 @@ from src.constants import *
 
 class Sheet:
 
-    width = 0
+    width = None
 
-    height = 0
+    height = None
 
-    top_left = (0, 0)
+    top_left = None
 
     image = None
 
     lines = []
 
-    line_height = 250
-
-    line_pos = []
+    line_height = None
 
     line_gap = 0
 
@@ -28,11 +26,13 @@ class Sheet:
         self.width = self.image.shape[::-1][1]
         self.height = self.image.shape[::-1][2]
         self.line_height = line_height
+        self.top_left = (0, 0)
 
         self.build_lines()
 
         self.draw_lines()
         self.draw_sheet()
+        self.draw_bars()
 
         save('test.png', self.image)
 
@@ -53,6 +53,15 @@ class Sheet:
         points = remove_close_point(result, 2000)
         return points
 
+    def find_all_bar_lines(self):
+        result = []
+        for image_path in os.listdir(bar_line_dir):
+            if image_path.endswith(".png"):
+                bar_line = read_template(bar_line_dir+image_path)
+                result = result + find_all_match(self.image, bar_line, 0.85)
+        points = remove_close_point(result, 5000)
+        return points
+
     def draw_sheet(self):
         draw_one_rectangle(self.image, (0, 0), self.width, self.height, blue)
 
@@ -60,14 +69,6 @@ class Sheet:
         for line in self.lines:
             line.draw_line()
 
-    def find_all_bar_lines(self):
-        result = []
-        for image_path in os.listdir(bar_line_dir):
-            if image_path.endswith(".png"):
-                bar_line = read_template(bar_line_dir+image_path)
-                result = result + find_all_match(self.image, bar_line, 0.85)
-
-        points = remove_close_point(result, 5000)
-
-        draw_all_rectangles(self.image, points, 50, 50, red)
-        return points
+    def draw_bars(self):
+        for line in self.lines:
+            line.draw_bars()

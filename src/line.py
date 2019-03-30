@@ -1,5 +1,6 @@
 from src.tools import *
 from src.constants import *
+from src.bar import *
 import os
 
 
@@ -17,8 +18,6 @@ class Line:
 
     bars = []
 
-    bar_line_points = None
-
     def __init__(self, image, top_left_point, line_height, line_gap, all_bar_line_points):
         self.image = image
         self.line_height = line_height
@@ -31,10 +30,20 @@ class Line:
         
 
     def build_bars(self, all_bar_line_points):
+        bar_line_points = []
         for bar_line_point in all_bar_line_points:
             if (self.contains(bar_line_point)):
-                self.bar_line_points.append(bar_line_point)
-        print(self.bar_line_points)
+                bar_line_points.append(bar_line_point)
+
+        for i in range(0, len(bar_line_points)-1):
+            bar_line_point_start = bar_line_points[i]
+            bar_line_point_end = bar_line_points[i+1]
+            width = bar_line_point_end[0]-bar_line_point_start[0]
+            top_left_point = (bar_line_point_start[0], self.top_left_point[1])
+            bar = Bar(self.image, top_left_point, width, self.line_height, self.line_gap)
+            self.bars.append(bar)
+
+        print(bar_line_points)
 
     def label_all_bar_lines(self):
         result = []
@@ -56,3 +65,7 @@ class Line:
 
     def draw_line(self):
         draw_one_rectangle(self.image, self.top_left_point, self.width, self.line_height+self.line_gap*2, red)
+
+    def draw_bars(self):
+        for bar in self.bars:
+            bar.draw_bar()

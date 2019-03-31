@@ -1,7 +1,8 @@
+from src.page import Page
 
-from src.sheet import Sheet
 
-
-sheet = Sheet('sample.png', 250)
-sheet.analyze_sharp_flat_natural()
-sheet.save('hhh.png')
+page = Page('sample.png', 250)
+page.analyze_sharp_flat_natural()
+page.analyze_notes()
+page.draw_sharp_flat_natural()
+page.save('hhh.png')

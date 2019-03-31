@@ -27,3 +27,5 @@ bass_dir = 'data/bass/'
 natural_dir = 'data/natural/'
 
 note_dir = 'data/note/'
+
+horizontal_line_dir = 'data/horizontal_line/'

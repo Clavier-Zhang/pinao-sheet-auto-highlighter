@@ -39,6 +39,14 @@ class Line:
 
         self.construct_bars(all_bar_line_points)
 
+        note_height = int(line_height/14)
+        
+        for i in range(0, 5):
+            fa_line_top_left_point = (top_left_point[0], top_left_point[1]+line_gap+i*note_height)
+            draw_one_rectangle(self.image, fa_line_top_left_point, 1500, 1, red)
+
+        # draw_one_rectangle(self.image, fa_line_top_left_point, 1500, 2, red)
+
     def construct_bars(self, all_bar_line_points):
         
         bar_line_points = []

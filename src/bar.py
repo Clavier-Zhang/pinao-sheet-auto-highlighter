@@ -1,5 +1,6 @@
 from src.tools import *
 from src.constants import *
+from src.note import *
 
 class Bar:
 
@@ -31,6 +32,8 @@ class Bar:
         self.bar_flat_points = []
         self.bar_natural_points = []
         self.notes = []
+
+        
         
 
     def analyze_sharp_and_flat_points(self, line_sharp_points, line_flat_points, line_sharp_num, line_flat_num, line_natural_points):
@@ -48,14 +51,26 @@ class Bar:
                 self.bar_natural_points.append(natural_point)
 
     def analyze_notes(self, line_note_points):
+        bar_note_points = []
         for note_point in line_note_points:
             if self.contains(note_point):
-                self.notes.append(note_point)
-        draw_one_rectangle(self.image, self.top_left_point, 100, 100, green)
-        print(self.top_left_point)
-        print(len(self.notes))
-        # print(bar_note_points)
+                bar_note_points.append(note_point)
 
+        vertical_groups = []
+        for note_point in bar_note_points:
+            keep = True
+            for vertical_group in vertical_groups:
+                vertical_point = vertical_group[0]
+                if in_the_same_vertical_line(vertical_point, note_point, 3):
+                    exist = False
+                    vertical_group.append(note_point)
+            if keep:
+                vertical_group = []
+                vertical_group.append(note_point)
+                vertical_groups.append(vertical_group)
+
+        print(vertical_groups)
+    
     def contains(self, point):
         x = point[0]
         y = point[1]

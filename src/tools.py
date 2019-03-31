@@ -56,6 +56,8 @@ def read(image_path):
 def read_template(templatepath):
     return cv2.imread(templatepath, 0)
 
+def in_the_same_vertical_line(p1, p2, range):
+    return abs(p1[0]-p2[0]) < range
 
 def remove_close_point(points, range):
     selecteds = []
@@ -68,6 +70,17 @@ def remove_close_point(points, range):
         if keep:
             selecteds.append(point)
     return selecteds
+
+def remove_vertical_close_point(points, range):
+    results = []
+    for point in points:
+        keep = True
+        for result in results:
+            if abs(point[1]-result[1]) < range:
+                keep = False
+        if keep:
+            results.append(point)
+    return results
 
 def mouse_call_back(event, x, y, flags, params):
     if event == cv2.EVENT_LBUTTONDOWN:

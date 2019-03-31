@@ -53,6 +53,7 @@ class Page:
 
     def analyze_notes(self):
         all_note_points = find_all_dir_templates(self.image, note_dir, 0.8, 50 )
+
         for line in self.lines:
             line.analyze_notes(all_note_points)
 

@@ -29,7 +29,7 @@ class Page:
         self.construct_lines()
 
         self.draw_lines()
-        self.draw_sheet()
+        self.draw_page()
         self.draw_bars()
 
     def construct_lines(self):
@@ -53,6 +53,12 @@ class Page:
 
     def analyze_notes(self):
         all_note_points = find_all_dir_templates(self.image, note_dir, 0.8, 50 )
+        all_clef_points = find_all_dir_templates(self.image, clef_dir, 0.85, 500)
+        all_bass_points = find_all_dir_templates(self.image, bass_dir, 0.85, 500)
+        draw_all_rectangles(self.image, all_bass_points, 50, 50, light_blue)
+        draw_all_rectangles(self.image, all_clef_points, 50, 130, light_blue)
+        print(all_clef_points)
+        print(all_bass_points)
 
         for line in self.lines:
             line.analyze_notes(all_note_points)
@@ -65,7 +71,7 @@ class Page:
             line.analyze_sharp_and_flat_points(all_sharp_points, all_flat_points, all_natural_points)
 
     # visualize sheet components
-    def draw_sheet(self):
+    def draw_page(self):
         draw_one_rectangle(self.image, (0, 0), self.width, self.height, blue)
 
     def draw_lines(self):
@@ -79,6 +85,10 @@ class Page:
     def draw_sharp_flat_natural(self):
         for line in self.lines:
             line.draw_sharp_flat_natural()
+
+    def draw_notes(self):
+        for line in self.lines:
+            line.draw_notes()
 
     def save(self, name):
         save(name, self.image)

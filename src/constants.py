@@ -24,6 +24,8 @@ flat_dir = 'data/flat/'
 
 bass_dir = 'data/bass/'
 
+clef_dir = 'data/clef/'
+
 natural_dir = 'data/natural/'
 
 note_dir = 'data/note/'
@@ -31,5 +33,5 @@ note_dir = 'data/note/'
 horizontal_line_dir = 'data/horizontal_line/'
 
 
-# top_note_dict = ['F', 'E', 'D', 'C', 'B', 'A', 'G']
-top_note_dict = ['fa', 'mi', 're', 'do', 'si', 'la', 'so']
+top_note_dict = ['F', 'E', 'D', 'C', 'B', 'A', 'G']
+# top_note_dict = ['fa', 'mi', 're', 'do', 'si', 'la', 'so']

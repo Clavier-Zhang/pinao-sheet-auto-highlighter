@@ -21,12 +21,9 @@ class Note:
         self.half_note_height = half_note_height
         self.origin_line = origin_line
 
-    def draw_note(self):
-        color = red
-        if self.is_top:
-            color = green
-        draw_one_rectangle(self.image, self.top_left_point, 10, 10, color)
+        self.analyze_pitch()
 
+    def analyze_pitch(self):
         count = 0
         target_height = self.top_left_point[1]
         start_height = self.origin_line
@@ -44,7 +41,7 @@ class Note:
                 while count < 0:
                     count += 7
             count %= 7
-            draw_text(self.image, (self.top_left_point[0]+20, self.top_left_point[1]+15), top_note_dict[count], blue)
+            
 
         else:
 
@@ -60,7 +57,18 @@ class Note:
                 while count < 0:
                     count += 7
             count %= 7
-        
-   
 
-            draw_text(self.image, (self.top_left_point[0]+20, self.top_left_point[1]+15), top_note_dict[count], blue)
+        self.pitch = top_note_dict[count]
+
+        
+
+    def draw_note(self):
+        color = red
+        if self.is_top:
+            color = green
+            
+        draw_one_rectangle(self.image, self.top_left_point, 17, 14, color)
+
+        draw_text(self.image, (self.top_left_point[0]+25, self.top_left_point[1]+15), self.pitch, blue)
+
+      

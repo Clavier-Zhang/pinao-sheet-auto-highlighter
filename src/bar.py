@@ -112,8 +112,6 @@ class Bar:
         for bottom_note_point in bottom_note_points:
             self.notes.append(Note(self.image, bottom_note_point, False, self.half_note_height, self.line_height_D))
 
-        for note in self.notes:
-            note.draw_note()
         
 
     def get_points_inside(self, points):
@@ -133,6 +131,10 @@ class Bar:
     def draw_bar(self):
         height = self.line_height + self.line_gap*2
         draw_one_rectangle(self.image, self.top_left_point, self.width, height, blue)
+
+    def draw_notes(self):
+        for note in self.notes:
+            note.draw_note()
 
     def draw_sharp_flat_natural(self):
         draw_all_rectangles(self.image, self.bar_sharp_points, 25, 50, amber)

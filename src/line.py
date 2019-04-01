@@ -122,6 +122,10 @@ class Line:
         for bar in self.bars:
             bar.draw_bar()
 
+    def draw_notes(self):
+        for bar in self.bars:
+            bar.draw_notes()
+
     def draw_sharp_flat_natural(self):
         draw_all_rectangles(self.image, self.front_sharp_points, 25, 50, red)
         draw_all_rectangles(self.image, self.front_natural_points, 25, 50, green)

@@ -15,6 +15,12 @@ def draw_one_horizontal_line(img, left_end, width, height, color):
     right_end = (left_end[0] + width, left_end[1])
     cv2.line(img, left_end, right_end, color, height)
 
+def draw_text(image, top_left_point, text, color):
+    font                   = cv2.FONT_HERSHEY_SIMPLEX
+    bottomLeftCornerOfText = (10,500)
+    fontScale              = 1
+    lineType               = 2
+    cv2.putText(image, str(text), top_left_point, font, fontScale, color, lineType)
 
 
 

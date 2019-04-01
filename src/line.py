@@ -41,27 +41,9 @@ class Line:
 
         note_height = line_height/13.5
 
-        # fa_line_top_left_point = (top_left_point[0], top_left_point[1]+line_gap)
-        # draw_one_rectangle(self.image, fa_line_top_left_point, 1500, 1, red)
-
-        # fa_line_top_left_point = (top_left_point[0], top_left_point[1]+line_gap+int(note_height*14))
-        # draw_one_rectangle(self.image, fa_line_top_left_point, 1500, 1, red)
-        
-        # for i in range(0, 10):
-        #     fa_line_top_left_point = (top_left_point[0], top_left_point[1]+line_gap+int(i*note_height))
-        #     draw_one_rectangle(self.image, fa_line_top_left_point, 1500, 1, red)
-        # for i in range(10, 15):
-        #     fa_line_top_left_point = (top_left_point[0], top_left_point[1]+line_gap+i*note_height)
-        #     draw_one_rectangle(self.image, fa_line_top_left_point, 1500, 1, red)
-
-        # draw_one_rectangle(self.image, fa_line_top_left_point, 1500, 2, red)
-
     def construct_bars(self, all_bar_line_points):
         
-        bar_line_points = []
-        for bar_line_point in all_bar_line_points:
-            if (self.contains(bar_line_point)):
-                bar_line_points.append(bar_line_point)
+        bar_line_points = self.get_points_inside(all_bar_line_points)
 
         bar_line_points.sort(key=lambda bar_line_point : bar_line_point[0])
 
@@ -74,12 +56,9 @@ class Line:
             self.bars.append(bar)
 
     def analyze_notes(self, all_note_points):
-        line_note_points = []
 
-        for note_point in all_note_points:
-            if self.contains(note_point):
-                line_note_points.append(note_point)
-        
+        line_note_points = self.get_points_inside(all_note_points)
+
         for bar in self.bars:
             bar.analyze_notes(line_note_points)
 
@@ -122,7 +101,19 @@ class Line:
             bar.analyze_sharp_and_flat_points(line_sharp_points, line_flat_points, line_sharp_num/2, line_flat_num/2, line_natural_points)
 
     
+    def get_points_inside(self, points):
+        temp = []
+        for point in points:
+            if self.contains(point):
+                temp.append(point)
+        return temp
 
+    def contains(self, point):
+        x = point[0]
+        y = point[1]
+        x_in_range = self.top_left_point[0] < x and x < self.top_left_point[0]+self.width
+        y_in_range = self.top_left_point[1] < y and y < self.top_left_point[1]+self.line_height+self.line_gap*2
+        return x_in_range and y_in_range
 
     def draw_line(self):
         draw_one_rectangle(self.image, self.top_left_point, self.width, self.line_height+self.line_gap*2, red)
@@ -137,10 +128,3 @@ class Line:
         draw_all_rectangles(self.image, self.front_flat_points, 25, 50, amethyst)
         for bar in self.bars:
             bar.draw_sharp_flat_natural()
-
-    def contains(self, point):
-        x = point[0]
-        y = point[1]
-        x_in_range = self.top_left_point[0] < x and x < self.top_left_point[0]+self.width
-        y_in_range = self.top_left_point[1] < y and y < self.top_left_point[1]+self.line_height+self.line_gap*2
-        return x_in_range and y_in_range

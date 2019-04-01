@@ -1,6 +1,7 @@
 from src.tools import *
 from src.constants import *
 from src.note import *
+import copy
 
 class Bar:
 
@@ -22,6 +23,16 @@ class Bar:
 
     notes = None
 
+    line_height_A = None
+
+    line_height_B = None
+
+    line_height_C = None
+
+    line_height_D = None
+
+    note_height = None
+
     def __init__(self, image, top_left_point, width, line_height, line_gap):
         self.image = image
         self.top_left_point = top_left_point
@@ -32,6 +43,14 @@ class Bar:
         self.bar_flat_points = []
         self.bar_natural_points = []
         self.notes = []
+
+        self.note_height = line_height/13.5
+
+        self.line_height_A = top_left_point[1]+line_gap
+        self.line_height_D = self.line_height_A+line_height
+        self.line_height_B = self.line_height_A+int(4*self.note_height)
+
+        self.line_height_C = self.line_height_D-int(4*self.note_height)
 
         
         
@@ -56,20 +75,38 @@ class Bar:
             if self.contains(note_point):
                 bar_note_points.append(note_point)
 
-        vertical_groups = []
-        for note_point in bar_note_points:
-            keep = True
-            for vertical_group in vertical_groups:
-                vertical_point = vertical_group[0]
-                if in_the_same_vertical_line(vertical_point, note_point, 3):
-                    exist = False
-                    vertical_group.append(note_point)
-            if keep:
-                vertical_group = []
-                vertical_group.append(note_point)
-                vertical_groups.append(vertical_group)
+        top_note_points = []
+        bottom_note_points = []
+        middle_note_points = []
 
-        print(vertical_groups)
+        for point in bar_note_points:
+            if point[1] <= self.line_height_B:
+                self.notes.append(Note(self.image, point, 'top'))
+                top_note_points.append(point)
+                # draw_one_rectangle(self.image, point, 10, 10, green)
+            elif point[1] >= self.line_height_C:
+                self.notes.append(Note(self.image, point, 'bottom'))
+                bottom_note_points.append(point)
+                # draw_one_rectangle(self.image, point, 10, 10, red)
+            else:
+                middle_note_points.append(point)
+
+        middle_note_points.sort(key=lambda point : point[1])
+        num = len(middle_note_points)
+        is_top = True
+        if num > 0:
+            hi = middle_note_points[0]
+            lo = middle_note_points[num-1]
+            is_top = abs(hi[1]-self.line_height_B) < abs(lo[1]-self.line_height_C)
+        print(is_top)
+
+        if is_top:
+            top_note_points = middle_note_points+top_note_points
+        else:
+            bottom_note_points = middle_note_points+bottom_note_points
+
+        draw_all_rectangles(self.image, top_note_points, 10, 10, green)
+        draw_all_rectangles(self.image, bottom_note_points, 10, 10, red)
     
     def contains(self, point):
         x = point[0]

@@ -6,6 +6,7 @@ class Note:
 
     pos = None
 
-    def __init__(self, image, top_left_point):
+    def __init__(self, image, top_left_point, pos):
         self.image = image
         self.top_left_point = top_left_point
+        self.pos = pos

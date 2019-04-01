@@ -39,11 +39,20 @@ class Line:
 
         self.construct_bars(all_bar_line_points)
 
-        note_height = int(line_height/14)
+        note_height = line_height/13.5
+
+        # fa_line_top_left_point = (top_left_point[0], top_left_point[1]+line_gap)
+        # draw_one_rectangle(self.image, fa_line_top_left_point, 1500, 1, red)
+
+        # fa_line_top_left_point = (top_left_point[0], top_left_point[1]+line_gap+int(note_height*14))
+        # draw_one_rectangle(self.image, fa_line_top_left_point, 1500, 1, red)
         
-        for i in range(0, 5):
-            fa_line_top_left_point = (top_left_point[0], top_left_point[1]+line_gap+i*note_height)
-            draw_one_rectangle(self.image, fa_line_top_left_point, 1500, 1, red)
+        # for i in range(0, 10):
+        #     fa_line_top_left_point = (top_left_point[0], top_left_point[1]+line_gap+int(i*note_height))
+        #     draw_one_rectangle(self.image, fa_line_top_left_point, 1500, 1, red)
+        # for i in range(10, 15):
+        #     fa_line_top_left_point = (top_left_point[0], top_left_point[1]+line_gap+i*note_height)
+        #     draw_one_rectangle(self.image, fa_line_top_left_point, 1500, 1, red)
 
         # draw_one_rectangle(self.image, fa_line_top_left_point, 1500, 2, red)
 

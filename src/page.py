@@ -28,18 +28,9 @@ class Page:
 
         self.construct_lines()
 
-        self.draw_lines()
-        self.draw_page()
-        self.draw_bars()
-
     def construct_lines(self):
         brace_points = find_all_dir_templates(self.image, brace_dir, 0.85, 5000)
         all_bar_line_points = find_all_dir_templates(self.image, bar_line_dir, 0.85, 5000)
-        sharp_points = find_all_dir_templates(self.image, sharp_dir, 0.75, 10)
-        flat_points = find_all_dir_templates(self.image, flat_dir, 0.75, 10)
-        natural_points = find_all_dir_templates(self.image, natural_dir, 0.75, 10)
-
-
         self.line_gap = int((brace_points[1][1]-brace_points[0][1]-self.line_height)/2)
 
         brace_points.sort(key=lambda brace_point : brace_point[1])
@@ -52,25 +43,22 @@ class Page:
         
 
     def analyze_notes(self):
-        all_note_points = find_all_dir_templates(self.image, note_dir, 0.8, 50 )
+        all_note_points = find_all_dir_templates(self.image, note_dir, 0.8, 100 )
         all_clef_points = find_all_dir_templates(self.image, clef_dir, 0.85, 500)
         all_bass_points = find_all_dir_templates(self.image, bass_dir, 0.85, 500)
         draw_all_rectangles(self.image, all_bass_points, 50, 50, light_blue)
         draw_all_rectangles(self.image, all_clef_points, 50, 130, light_blue)
-        print(all_clef_points)
-        print(all_bass_points)
 
         for line in self.lines:
             line.analyze_notes(all_note_points)
 
     def analyze_sharp_flat_natural(self):
-        all_sharp_points = find_all_dir_templates(self.image, sharp_dir, 0.75, 30)
-        all_flat_points = find_all_dir_templates(self.image, flat_dir, 0.75, 30)
-        all_natural_points = find_all_dir_templates(self.image, natural_dir, 0.75, 30)
+        all_sharp_points = find_all_dir_templates(self.image, sharp_dir, 0.75, 40)
+        all_flat_points = find_all_dir_templates(self.image, flat_dir, 0.75, 40)
+        all_natural_points = find_all_dir_templates(self.image, natural_dir, 0.75, 40)
         for line in self.lines:
             line.analyze_sharp_and_flat_points(all_sharp_points, all_flat_points, all_natural_points)
 
-    # visualize sheet components
     def draw_page(self):
         draw_one_rectangle(self.image, (0, 0), self.width, self.height, blue)
 

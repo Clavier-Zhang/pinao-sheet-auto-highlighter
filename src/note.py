@@ -60,15 +60,13 @@ class Note:
 
         self.pitch = top_note_dict[count]
 
-        
-
     def draw_note(self):
         color = red
         if self.is_top:
             color = green
-            
-        draw_one_rectangle(self.image, self.top_left_point, 17, 14, color)
 
-        draw_text(self.image, (self.top_left_point[0]+25, self.top_left_point[1]+15), self.pitch, blue)
+        draw_one_rectangle(self.image, self.top_left_point, 33, 28, color)
+
+        draw_text(self.image, (self.top_left_point[0]+45, self.top_left_point[1]+15), self.pitch, blue)
 
       

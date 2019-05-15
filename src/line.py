@@ -25,7 +25,7 @@ class Line:
     front_natural_points = []
 
     # solve this later
-    sharp_flat_range = 200
+    sharp_flat_range = 300
 
     def __init__(self, image, top_left_point, line_height, line_gap, all_bar_line_points):
         self.image = image
@@ -34,12 +34,9 @@ class Line:
         self.line_gap = line_gap
         self.top_left_point = top_left_point
         self.bars = []
-
         self.front_sharp_points = []
-
         self.construct_bars(all_bar_line_points)
 
-        note_height = line_height/13.5
 
     def construct_bars(self, all_bar_line_points):
         
@@ -127,8 +124,8 @@ class Line:
             bar.draw_notes()
 
     def draw_sharp_flat_natural(self):
-        draw_all_rectangles(self.image, self.front_sharp_points, 25, 50, red)
-        draw_all_rectangles(self.image, self.front_natural_points, 25, 50, green)
-        draw_all_rectangles(self.image, self.front_flat_points, 25, 50, amethyst)
+        draw_all_rectangles(self.image, self.front_sharp_points, 30, 70, red)
+        draw_all_rectangles(self.image, self.front_natural_points, 30, 70, green)
+        draw_all_rectangles(self.image, self.front_flat_points, 30, 70, amethyst)
         for bar in self.bars:
             bar.draw_sharp_flat_natural()

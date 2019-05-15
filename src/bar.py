@@ -45,22 +45,15 @@ class Bar:
         self.bar_flat_points = []
         self.bar_natural_points = []
         self.notes = []
-
         self.note_height = line_height/14.6
 
         self.line_height_A = top_left_point[1]+line_gap
         self.line_height_D = self.line_height_A+line_height
         self.line_height_B = self.line_height_A+int(4*self.note_height)
-
         self.line_height_C = self.line_height_D-int(4*self.note_height)
         
         self.half_note_height = self.note_height/2
 
-        # for i in range(-10, 40):
-        #     temp = (top_left_point[0], top_left_point[1]+line_gap+int(i*self.half_note_height))
-        #     draw_one_horizontal_line(self.image, temp, self.width, 1, pink)
-
-        
         
 
     def analyze_sharp_and_flat_points(self, line_sharp_points, line_flat_points, line_sharp_num, line_flat_num, line_natural_points):

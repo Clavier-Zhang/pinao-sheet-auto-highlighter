@@ -25,7 +25,7 @@ class Page:
         self.line_height = line_height
         self.top_left = (0, 0)
         self.lines = []
-
+        
         self.construct_lines()
 
     def construct_lines(self):

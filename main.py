@@ -12,15 +12,15 @@ for i in range(0, len(images)):
 
 	page = Page('./output/'+str(i)+'.jpg', 350)
 
-	page.analyze_notes()
+	# page.analyze_notes()
 
-	page.analyze_sharp_flat_natural()
+	# page.analyze_sharp_flat_natural()
 
 	page.draw_page()
 	page.draw_lines()
 	page.draw_bars()
-	page.draw_sharp_flat_natural()
-	page.draw_notes()
+	# page.draw_sharp_flat_natural()
+	# page.draw_notes()
 
 	page.save('./output/'+str(i)+'.jpg')
 
